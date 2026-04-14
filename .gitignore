@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+.env
+sunosaathi_implementation_plan.docx
