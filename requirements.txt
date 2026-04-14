@@ -1,0 +1,6 @@
+# ── Streamlit frontend + Whisper inference (Streamlit Community Cloud safe) ──
+streamlit>=1.31.0
+openai-whisper
+torch
+spacy
+numpy

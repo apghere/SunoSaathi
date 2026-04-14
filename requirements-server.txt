@@ -1,0 +1,11 @@
+# Local FastAPI server (server.py + client.py) — install on top of requirements.txt:
+#   pip install -r requirements-server.txt
+-r requirements.txt
+fastapi
+uvicorn[standard]
+websockets
+
+# Audio capture — platform-specific, install manually:
+#   Windows:     pip install pyaudio webrtcvad-wheels
+#   Linux/macOS: pip install pyaudio webrtcvad
+#                (Linux also needs:  sudo apt install portaudio19-dev)
