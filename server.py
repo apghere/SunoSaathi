@@ -90,15 +90,30 @@ def pcm16_to_float32(raw: bytes) -> np.ndarray:
     return audio.astype(np.float32) / 32_768.0
 
 
+_RMS_MIN = 0.001  # below this the chunk is near-silence → skip, don't hallucinate
+
+
 def run_whisper(audio: np.ndarray) -> str:
     """
     Transcribe a float32 audio array.
     fp16=False is required on CPU; Whisper's default True raises on non-CUDA.
+    Returns an empty string for near-silent chunks instead of hallucinating.
     """
+    rms = float(np.sqrt(np.mean(audio ** 2)))
+    if rms < _RMS_MIN:
+        logger.debug(f"Chunk too quiet (RMS={rms:.5f}) — skipping to avoid hallucination")
+        return ""
+
     result = _whisper_model.transcribe(
         audio,
         fp16=False,
         without_timestamps=True,
+        # Prevent cascade hallucinations across segments.
+        condition_on_previous_text=False,
+        # Let Whisper's own detectors suppress low-confidence output.
+        no_speech_threshold=0.6,
+        compression_ratio_threshold=2.4,
+        logprob_threshold=-1.0,
     )
     return result["text"].strip()
 

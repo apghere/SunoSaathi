@@ -1,6 +1,18 @@
-# ── Streamlit frontend + Whisper inference (Streamlit Community Cloud safe) ──
-streamlit>=1.31.0
+# ── Core: Streamlit Cloud + local inference ─────────────────────────────────
+streamlit>=1.35.0
 openai-whisper
 torch
 spacy
 numpy
+
+# ── NLP / Language detection ─────────────────────────────────────────────────
+langdetect          # lightweight language ID (~200 KB); fastText is optional
+
+# ── Optional: install fasttext for better multilingual detection ─────────────
+# fasttext-wheel    # Windows-friendly build; or `fasttext` on Linux/macOS
+#                   # Also download the model (~130 MB):
+#                   #   python -c "from nlp.lang_detect import download_fasttext_model; download_fasttext_model()"
+
+# ── Optional: MediaPipe (only needed for landmark extraction, not for the app) ─
+# mediapipe         # pip install mediapipe opencv-python
+#                   # Then: python avatar/extract_landmarks.py --video_dir videos/
